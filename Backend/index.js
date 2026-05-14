@@ -10,10 +10,9 @@ app.use(express.json());
 
 app.use("/api", routes);
 
-testConnection();
-
-// Only listen when running locally (not on Vercel)
+// Only run DB sync and listen when running locally (not on Vercel)
 if (process.env.NODE_ENV !== "production") {
+  testConnection();
   app.listen(5000, () => {
     console.log("Server is running on port 5000");
   });

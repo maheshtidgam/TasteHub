@@ -1,4 +1,5 @@
 import { Sequelize } from "sequelize";
+import "pg";
 import createUserModel from "../models/userSchema.js";
 import "dotenv/config";
 
