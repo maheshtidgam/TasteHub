@@ -8,6 +8,10 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 
+app.get("/", (req, res) => {
+  res.json({ message: "TasteHub API is running" });
+});
+
 app.use("/api", routes);
 
 // Only run DB sync and listen when running locally (not on Vercel)
