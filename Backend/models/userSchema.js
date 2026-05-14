@@ -14,6 +14,10 @@ const createUserModel = (sequelize) => {
       allowNull: false,
       unique: true,
     },
+    mobileNumber: {
+      type: DataTypes.STRING,
+      allowNull: true,
+    },
     password: {
       type: DataTypes.STRING,
       allowNull: false,

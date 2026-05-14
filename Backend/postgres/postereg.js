@@ -1,10 +1,22 @@
 import { Sequelize } from "sequelize";
 import createUserModel from "../models/userSchema.js";
+import "dotenv/config";
 
-const sequelize = new Sequelize("table-booking", "postgres", "mahesh@123", {
-  host: "localhost",
-  dialect: "postgres",
-});
+const sequelize = new Sequelize(
+  process.env.PGDATABASE,
+  process.env.PGUSER,
+  process.env.PGPASSWORD,
+  {
+    host: process.env.PGHOST,
+    dialect: "postgres",
+    dialectOptions: {
+      ssl: {
+        require: true,
+        rejectUnauthorized: false,
+      },
+    },
+  }
+);
 
 const User = createUserModel(sequelize);
 
