@@ -7,8 +7,9 @@ export interface registerPayload {
   firstName: string;
   lastName: string;
   email: string;
-  mobileNo: number;
+  mobileNumber: number;
   password: string;
+  role: string;
 }
 export interface otpVerifyPayload {
   email: string;

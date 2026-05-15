@@ -16,6 +16,7 @@ dist-ssr
 !.env.example
 !.env.test
 !.env.production
+*package-lock.json
 
 # Editor directories and files
 .vscode/*

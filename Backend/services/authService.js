@@ -42,7 +42,7 @@ const register = async (req, res) => {
     if (error.name === "SequelizeUniqueConstraintError") {
       return res.status(409).json({ message: "Email already exists" });
     }
-    res.status(500).json({ message: "Error registering user" });
+    res.status(500).json({ message: "Error registering user"});
   }
 };
 
