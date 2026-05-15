@@ -42,12 +42,13 @@ const register = async (req, res) => {
     if (error.name === "SequelizeUniqueConstraintError") {
       return res.status(409).json({ message: "Email already exists" });
     }
-    res.status(500).json({ message: "Error registering user"});
+    res.status(500).json({ message: "Error registering user" });
   }
 };
 
+const otpStore = {};
 const login = async (req, res) => {
-  const { email, password, role } = req.body;
+  const { email, password } = req.body;
   const user = await User.findOne({ where: { email } });
   if (!user) {
     return res.status(404).json({ message: "User not found" });
@@ -56,18 +57,28 @@ const login = async (req, res) => {
   if (!isPasswordValid) {
     return res.status(401).json({ message: "Invalid password" });
   }
+
+  const otp = generateOTP();
+  otpStore[email] = otp;
   // const token= createToken(user);
-
-  res.json({ message: "Login successful. OTP sent n email" });
+  try {
+    await transporter.sendMail({
+      from: process.env.EMAIL_USER || "maheshtidgam1234@gmail.com",
+      to: email,
+      subject: "Your OTP Code",
+      text: `Your OTP code is: ${otp}`,
+    });
+    res.json({ message: "OTP sent successfully", email });
+  } catch (error) {
+    res.status(500).json({ message: "Error sending OTP", error });
+  }
 };
-
-const otpStore = {};
 
 const transporter = nodemailer.createTransport({
   service: "gmail",
   auth: {
-    user: process.env.EMAIL_USER || "maheshtidgam1234@gmail.com",
-    pass: process.env.EMAIL_PASS || "maheshtidgam@1234",
+    user: process.env.EMAIL_USER || "maheshtidgam9@gmail.com",
+    pass: process.env.EMAIL_PASS || "suwiacdfdubgqwck",
   },
 });
 
@@ -92,8 +103,20 @@ const sendOTP = async (req, res) => {
   }
 };
 
+const verifyOTP = async (req, res) => {
+  const { email, otp } = req.body;
+  if (!otpStore[email] || otpStore[email] !== otp) {
+    return res.status(400).json({ message: "Invalid OTP" });
+  }
+  const user = await User.findOne({ where: { email } });
+  const token = createToken(user);
+  delete otpStore[email];
+  res.json({ message: "OTP verified successfully", token, role: user.role });
+};
+
 export const authService = {
   register,
   login,
   sendOTP,
+  verifyOTP,
 };
