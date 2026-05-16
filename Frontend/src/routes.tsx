@@ -3,6 +3,7 @@ import { createBrowserRouter, Navigate } from "react-router-dom";
 import Login from "./pages/auth/Login";
 import AuthLayout from "./components/layout/AuthLayout";
 import SignUp from "./pages/auth/SignUp";
+import { ComingSoon } from "./pages/ComingSoon";
 import { OtpVerify } from "./pages/auth/OtpVerify";
 
 const router = createBrowserRouter([
@@ -31,6 +32,10 @@ const router = createBrowserRouter([
         element: <OtpVerify />,
       },
     ],
+  },
+  {
+    path: "*",
+    element: <ComingSoon />,
   },
 ]);
 

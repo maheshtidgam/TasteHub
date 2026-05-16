@@ -32,7 +32,7 @@ const Login = () => {
       const response = await dispatch(loginUser(formData));
       console.log("Login user", response);
       if (response.payload.success) {
-        navigate("/otp-verify");
+        navigate("/auth/otp-verify");
       }
     } catch (err) {
       if (err instanceof yup.ValidationError) {
