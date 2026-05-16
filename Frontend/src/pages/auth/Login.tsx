@@ -32,7 +32,9 @@ const Login = () => {
       const response = await dispatch(loginUser(formData));
       console.log("Login user", response);
       if (response.payload.success) {
-        navigate("/auth/otp-verify");
+        navigate("/auth/otp-verify", {
+          state: { email: response.payload.email },
+        });
       }
     } catch (err) {
       if (err instanceof yup.ValidationError) {

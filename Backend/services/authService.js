@@ -68,7 +68,7 @@ const login = async (req, res) => {
       subject: "Your OTP Code",
       text: `Your OTP code is: ${otp}`,
     });
-    res.json({ message: "OTP sent successfully", email, success: true });
+    return res.json({ message: "OTP sent successfully", email, success: true });
   } catch (error) {
     res.status(500).json({ message: "Error sending OTP", error });
   }
@@ -97,9 +97,9 @@ const sendOTP = async (req, res) => {
       subject: "Your OTP Code",
       text: `Your OTP code is: ${otp}`,
     });
-    res.json({ message: "OTP sent successfully" });
+    return res.json({ message: "OTP sent successfully", success: true });
   } catch (error) {
-    res.status(500).json({ message: "Error sending OTP" });
+    res.status(500).json({ message: "Error sending OTP", success: false });
   }
 };
 
@@ -111,7 +111,12 @@ const verifyOTP = async (req, res) => {
   const user = await User.findOne({ where: { email } });
   const token = createToken(user);
   delete otpStore[email];
-  res.json({ message: "OTP verified successfully", token, role: user.role });
+  return res.json({
+    message: "OTP verified successfully",
+    token,
+    role: user.role,
+    success: true,
+  });
 };
 
 export const authService = {

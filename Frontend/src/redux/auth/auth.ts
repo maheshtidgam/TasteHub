@@ -13,5 +13,5 @@ export interface registerPayload {
 }
 export interface otpVerifyPayload {
   email: string;
-  otp: number;
+  otp: string;
 }
