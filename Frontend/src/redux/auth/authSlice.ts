@@ -1,7 +1,13 @@
+import { OtpVerify } from "./../../pages/auth/OtpVerify";
 import axios from "axios";
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
-import { loginApi, registerApi } from "../../constant";
-import type { loginPayload, registerPayload } from "./auth";
+import {
+  loginApi,
+  otpVerifyApi,
+  registerApi,
+  sendOtpApi,
+} from "../../constant";
+import type { loginPayload, registerPayload, otpVerifyPayload } from "./auth";
 
 interface AuthState {
   loading: boolean;
@@ -32,6 +38,30 @@ export const registerUser = createAsyncThunk(
   async (payload: registerPayload, { rejectWithValue }) => {
     try {
       const response = await axios.post(registerApi, payload);
+      return response.data;
+    } catch (error: any) {
+      return rejectWithValue(error.response.data);
+    }
+  },
+);
+
+export const OtpVerifyUser = createAsyncThunk(
+  "auth/verifyOtpUser",
+  async (payload: otpVerifyPayload, { rejectWithValue }) => {
+    try {
+      const response = await axios.post(otpVerifyApi, payload);
+      return response.data;
+    } catch (error: any) {
+      return rejectWithValue(error.response.data);
+    }
+  },
+);
+
+export const sendOtp = createAsyncThunk(
+  "auth/sendOtp",
+  async (email: String, { rejectWithValue }) => {
+    try {
+      const response = await axios.post(sendOtpApi, { email });
       return response.data;
     } catch (error: any) {
       return rejectWithValue(error.response.data);
@@ -70,6 +100,30 @@ const authSlice = createSlice({
       state.user = action.payload;
     });
     builder.addCase(registerUser.rejected, (state, action) => {
+      state.loading = false;
+      state.error = action.payload as string | null;
+    });
+    builder.addCase(OtpVerifyUser.pending, (state) => {
+      state.loading = true;
+      state.error = null;
+    });
+    builder.addCase(OtpVerifyUser.fulfilled, (state, action) => {
+      state.loading = false;
+      state.user = action.payload;
+    });
+    builder.addCase(OtpVerifyUser.rejected, (state, action) => {
+      state.loading = false;
+      state.error = action.payload as string | null;
+    });
+    builder.addCase(sendOtp.pending, (state) => {
+      state.loading = true;
+      state.error = null;
+    });
+    builder.addCase(sendOtp.fulfilled, (state, action) => {
+      state.loading = false;
+      state.error = action.payload as string | null;
+    });
+    builder.addCase(sendOtp.rejected, (state, action) => {
       state.loading = false;
       state.error = action.payload as string | null;
     });

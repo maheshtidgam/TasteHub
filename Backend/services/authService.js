@@ -68,7 +68,7 @@ const login = async (req, res) => {
       subject: "Your OTP Code",
       text: `Your OTP code is: ${otp}`,
     });
-    res.json({ message: "OTP sent successfully", email });
+    res.json({ message: "OTP sent successfully", email, success: true });
   } catch (error) {
     res.status(500).json({ message: "Error sending OTP", error });
   }
