@@ -7,12 +7,6 @@ import * as yup from "yup";
 import type { AppDispatch } from "../../redux/store";
 import { useState } from "react";
 
-interface loginResponse {
-  message: string;
-  email: string;
-  success: boolean;
-}
-
 const Login = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch<AppDispatch>();

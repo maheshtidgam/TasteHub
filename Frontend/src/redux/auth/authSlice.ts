@@ -1,4 +1,3 @@
-import { OtpVerify } from "./../../pages/auth/OtpVerify";
 import axios from "axios";
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import {
